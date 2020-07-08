@@ -1,0 +1,63 @@
+<resources>
+    <string name="app_name">AnyCast</string>
+
+    <string name="app_exit_toast">再按一次退出</string>
+    <string name="warning_loading_fail">加载失败</string>
+    <string name="warning_network_retry">数据加载失败,请重新加载或者检查网络是否链接</string>
+
+    <!-- Menu Items -->
+    <string name="title_photos">Photos</string>
+    <string name="title_favorite">Favorites</string>
+
+    <!-- Error Messages -->
+    <string name="message_no_data_available">No data available</string>
+    <string name="error_network_check">Please check your network connection</string>
+
+    <!-- Shared Preference Keys -->
+    <string name="key_shared_preferences_name">Flickr_Shared_Preference</string>
+
+
+    <!--MagicSakura-->
+    <string name="cancel">cancel</string>
+    <string name="confirm">ok</string>
+
+    <!--主页-->
+    <string name="test_username">戴建设</string>
+    <string name="test_level">Lv0</string>
+    <string name="members">正式会员</string>
+
+    <!-- Menu Items -->
+    <string name="menu_home">主页</string>
+    <string name="menu_cache">离线缓存</string>
+    <string name="menu_search">搜索</string>
+    <string name="menu_favorite">我的收藏</string>
+    <string name="menu_history">历史记录</string>
+    <string name="menu_theme">主题选择</string>
+    <string name="menu_settings">设置与帮助</string>
+
+    <string name="section_recommend">推荐</string>
+    <string name="section_live">直播</string>
+    <string name="section_focus">关注</string>
+    <string name="section_more">分区</string>
+    <string name="section_game">游戏</string>
+    <string name="section_discover">发现</string>
+
+    <!--主题选择-->
+    <string name="theme_pick">主题选择</string>
+
+    <!--MediaPlayer-->
+    <string name="video_init">初始化播放器…</string>
+    <string name="video_loading">加载中…</string>
+    <string name="play_immediately">立即播放</string>
+    <string name="giraffe_player_url_empty">Please specify the address of the video playback</string>
+    <string name="small_problem">Player encountered a small problem</string>
+    <string name="can_not_play">can not play this video</string>
+    <string name="not_support">player not support this device</string>
+
+    <!--推荐-->
+    <string name="rank">排行榜</string>
+    <string name="home_tab_more">更多</string>
+    <string name="look_more">查看更多</string>
+    <string name="change_recommend">换一波推荐</string>
+    <string name="selection">选集</string>
+</resources>

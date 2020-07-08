@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_home"
+            android:checked="true"
+            android:icon="@mipmap/ic_home_black_24dp"
+            android:title="@string/menu_home"/>
+        <item
+            android:id="@+id/item_download"
+            android:checkable="false"
+            android:icon="@mipmap/ic_file_download_black_24dp"
+            android:title="@string/menu_cache"/>
+    </group>
+
+    <group
+        android:id="@+id/group_user"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_favourite"
+            android:icon="@mipmap/ic_star_black_24dp"
+            android:title="@string/menu_favorite"/>
+        <item
+            android:id="@+id/item_history"
+            android:icon="@mipmap/ic_history_black_24dp"
+            android:title="@string/menu_history"/>
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_theme"
+            android:checkable="false"
+            android:icon="@mipmap/ic_color_lens_black_24dp"
+            android:title="@string/menu_theme"/>
+
+        <item
+            android:id="@+id/item_settings"
+            android:icon="@mipmap/ic_settings_black_24dp"
+            android:title="@string/menu_settings"/>
+
+    </group>
+
+</menu>
