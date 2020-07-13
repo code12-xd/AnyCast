@@ -11,6 +11,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
+import com.code12.anybaseui.Model.DataLoaderFactory;
+import com.code12.anybaseui.Model.IDataLoader;
 import com.code12.anycast.Model.types.LiveAppIndexInfo;
 import com.code12.anycast.Model.network.RetrofitHelper;
 
@@ -26,10 +28,7 @@ public class LiveViewModel extends BaseFragmentViewModel {
 
     @Override
     public Observable loadDataObservable() {
-        return RetrofitHelper.getLiveAPI()
-                .getLiveAppIndex()
-                //TODO:?? .compose(bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        IDataLoader loader = DataLoaderFactory.<LiveAppIndexInfo>createDataLoader(LiveAppIndexInfo.class);
+        return loader.loadObservable();
     }
 }

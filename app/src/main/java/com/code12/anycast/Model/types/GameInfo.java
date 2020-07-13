@@ -4,11 +4,21 @@
  */
 package com.code12.anycast.Model.types;
 
+import com.code12.anybaseui.Model.BaseBean;
+import com.code12.anybaseui.Model.DataLoader;
+import com.code12.anybaseui.Model.IDataLoader;
+import com.code12.anycast.Model.network.RetrofitHelper;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.Map;
 
-public class GameInfo {
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
+public class GameInfo extends BaseBean {
     private int error;
     @SerializedName("data")
     private List<ResultBean> result;
@@ -117,6 +127,32 @@ public class GameInfo {
 
         public void setUrl(String url) {
             this.url = url;
+        }
+    }
+
+    @Override
+    public IDataLoader getLoader() {
+        return mLoader;
+    }
+
+    private static GameInfo.Loader mLoader = new GameInfo.Loader();
+
+    // bean's data loader, must implement to do own load action
+    private static class Loader extends DataLoader<NormalVListInfo> {
+        public Loader() { }
+
+        @Override
+        public void load(Consumer onNext, Consumer onError) {
+            loadObservable().subscribe((Consumer<? super GameInfo>)onNext, onError);
+        }
+
+        @Override
+        public Observable loadObservable() {
+            return RetrofitHelper.getGameAPI()
+                    .getGameInfo()
+                    //TODO:?? .compose(bindToLifecycle())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
         }
     }
 }

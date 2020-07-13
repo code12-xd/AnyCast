@@ -5,10 +5,13 @@
 package com.code12.anycast.Model.network;
 
 import com.code12.anycast.AcApplication;
+import com.code12.anycast.Model.network.api.BiliAVSearchService;
 import com.code12.anycast.Model.network.api.BiliAVVideoService;
 import com.code12.anycast.Model.network.api.BiliAppService;
 import com.code12.anycast.Model.network.api.GameApi;
 import com.code12.anycast.Model.network.api.LiveService;
+import com.code12.anycast.Model.network.api.NormalVideoApi;
+import com.code12.anycast.Model.network.api.VideoApi;
 import com.code12.anycast.auxilliary.utils.CommonUtil;
 import com.code12.anycast.auxilliary.utils.ConstantUtil;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -51,8 +54,20 @@ public class RetrofitHelper {
         return createApi(GameApi.class, ConstantUtil.GAME_BASE_URL);
     }
 
+    public static NormalVideoApi getNormalVAPI() {
+        return createApi(NormalVideoApi.class, ConstantUtil.NORMALV_BASE_URL);
+    }
+
     public static BiliAppService getBiliAppAPI() {
         return createApi(BiliAppService.class, ConstantUtil.APP_BASE_URL);
+    }
+
+    public static BiliAVSearchService getBiliAVSearchAPI() {
+        return createApi(BiliAVSearchService.class, ConstantUtil.RANK_BASE_URL);
+    }
+
+    public static VideoApi getVideoAPI(String url) {
+        return createApi(VideoApi.class, url);
     }
 
     private static <T> T createApi(Class<T> clazz, String baseUrl) {

@@ -5,6 +5,12 @@ import android.content.Context;
 
 import com.bilibili.magicasakura.utils.ThemeUtils;
 import com.code12.anycast.View.auxiliary.ThemeHelper;
+import com.code12.exowrapper.ExoMediaPlayer;
+import com.code12.ijkwrapper.IjkPlayer;
+import com.code12.playerframework.config.PlayerConfig;
+import com.code12.playerframework.config.PlayerLibrary;
+import com.code12.playerframework.entity.DecoderPlan;
+import com.code12.playerframework.record.PlayRecordManager;
 import com.facebook.stetho.Stetho;
 
 import androidx.annotation.ColorInt;
@@ -12,6 +18,9 @@ import androidx.annotation.ColorRes;
 
 public class AcApplication extends Application implements ThemeUtils.switchColor{
     public static AcApplication mInstance;
+
+    public static final int PLAN_ID_IJK = 1;
+    public static final int PLAN_ID_EXO = 2;
 
     @Override
     public void onCreate() {
@@ -33,6 +42,21 @@ public class AcApplication extends Application implements ThemeUtils.switchColor
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                         .build());
+
+        PlayerConfig.addDecoderPlan(new DecoderPlan(PLAN_ID_IJK, IjkPlayer.class.getName(), "IjkPlayer"));
+        PlayerConfig.addDecoderPlan(new DecoderPlan(PLAN_ID_EXO, ExoMediaPlayer.class.getName(), "ExoPlayer"));
+        PlayerConfig.setDefaultPlanId(PLAN_ID_EXO);
+
+        //use default NetworkEventProducer.
+        PlayerConfig.setUseDefaultNetworkEventProducer(true);
+
+        PlayerConfig.playRecord(true);
+
+        PlayRecordManager.setRecordConfig(
+                new PlayRecordManager.RecordConfig.Builder()
+                        .setMaxRecordCount(100).build());
+
+        PlayerLibrary.init(this);
     }
 
     @Override

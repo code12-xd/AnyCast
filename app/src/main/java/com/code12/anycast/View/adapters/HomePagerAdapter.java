@@ -5,6 +5,7 @@ import android.content.Context;
 import com.code12.anycast.R;
 import com.code12.anycast.View.Fragments.GameFragment;
 import com.code12.anycast.View.Fragments.LiveFragment;
+import com.code12.anycast.View.Fragments.NormalVFragment;
 import com.code12.anycast.View.Fragments.RecommendFragment;
 
 import androidx.fragment.app.Fragment;
@@ -26,7 +27,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
         if (fragments[position] == null) {
             switch (position) {
                 case 0:
-                    fragments[position] = LiveFragment.newInstance();
+                    fragments[position] = NormalVFragment.newInstance();
                     break;
                 case 1:
                     fragments[position] = RecommendFragment.newInstance();

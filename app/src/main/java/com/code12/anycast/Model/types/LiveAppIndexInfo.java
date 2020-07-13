@@ -1,8 +1,18 @@
 package com.code12.anycast.Model.types;
 
+import com.code12.anybaseui.Model.BaseBean;
+import com.code12.anybaseui.Model.DataLoader;
+import com.code12.anybaseui.Model.IDataLoader;
+import com.code12.anycast.Model.network.RetrofitHelper;
+
 import java.util.List;
 
-public class LiveAppIndexInfo {
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
+public class LiveAppIndexInfo extends BaseBean {
 
     private int code;
     private String message;
@@ -1019,6 +1029,32 @@ public class LiveAppIndexInfo {
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public IDataLoader getLoader() {
+        return mLoader;
+    }
+
+    private static LiveAppIndexInfo.Loader mLoader = new LiveAppIndexInfo.Loader();
+
+    // bean's data loader, must implement to do own load action
+    private static class Loader extends DataLoader<LiveAppIndexInfo> {
+        public Loader() { }
+
+        @Override
+        public void load(Consumer onNext, Consumer onError) {
+            loadObservable().subscribe((Consumer<? super GameInfo>)onNext, onError);
+        }
+
+        @Override
+        public Observable loadObservable() {
+            return RetrofitHelper.getLiveAPI()
+                    .getLiveAppIndex()
+                    //TODO:?? .compose(bindToLifecycle())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
         }
     }
 }

@@ -10,9 +10,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.code12.anycast.AcApplication;
 import com.code12.anycast.Model.types.GameInfo;
 import com.code12.anycast.R;
 import com.code12.anycast.View.Views.CircleImageView;
+import com.code12.anycast.ViewModel.VideoBeanViewModel;
 import com.code12.anycast.auxilliary.utils.LogUtil;
 
 import org.dom4j.Document;
@@ -29,12 +31,14 @@ import okhttp3.ResponseBody;
 public class GameAdapter extends RecyclerView.Adapter {
     private Context context;
     private GameInfo mGameInfo;
+    private VideoBeanViewModel mVideoModel;
 
     private static final int TYPE_ENTRANCE = 0;
     private static final int TYPE_GAME_ITEM = 1;
 
     public GameAdapter(Context context) {
         this.context = context;
+        mVideoModel = new VideoBeanViewModel(AcApplication.getInstance());
     }
 
     public void setGameInfo(GameInfo gameinfo) {
@@ -154,8 +158,8 @@ public class GameAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public void startPlay(GameInfo.ResultBean livesBean){
-        //TODO: ?? enter room
+    public void startPlay(GameInfo.ResultBean resultBean){
+        mVideoModel.parseUrl(resultBean.getUrl());
     }
 
     private String parseLiveUrl(ResponseBody responseBody) {

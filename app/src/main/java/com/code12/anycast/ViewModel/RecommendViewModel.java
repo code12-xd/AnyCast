@@ -5,6 +5,9 @@ package com.code12.anycast.ViewModel;
 
 import android.app.Application;
 
+import com.code12.anybaseui.Model.DataLoaderFactory;
+import com.code12.anybaseui.Model.IDataLoader;
+import com.code12.anycast.Model.types.NormalVListInfo;
 import com.code12.anycast.Model.types.RecommendBannerInfo;
 import com.code12.anycast.Model.types.RecommendInfo;
 import com.code12.anycast.Model.network.RetrofitHelper;

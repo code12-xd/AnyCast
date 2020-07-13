@@ -5,6 +5,8 @@ package com.code12.anycast.ViewModel;
 
 import android.app.Application;
 
+import com.code12.anybaseui.Model.DataLoaderFactory;
+import com.code12.anybaseui.Model.IDataLoader;
 import com.code12.anycast.Model.types.GameInfo;
 import com.code12.anycast.Model.network.RetrofitHelper;
 import com.code12.anycast.auxilliary.utils.LogUtil;
@@ -31,11 +33,8 @@ public class GameViewModel extends BaseFragmentViewModel {
 
     @Override
     public Observable loadDataObservable() {
-        return RetrofitHelper.getGameAPI()
-                .getGameInfo()
-                //TODO:?? .compose(bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+        IDataLoader loader = DataLoaderFactory.<GameInfo>createDataLoader(GameInfo.class);
+        return loader.loadObservable();
     }
 
     @Override

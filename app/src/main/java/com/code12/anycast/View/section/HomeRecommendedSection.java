@@ -17,9 +17,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.code12.anycast.AcApplication;
 import com.code12.anycast.R;
 import com.code12.anycast.Model.types.RecommendInfo;
 import com.code12.anycast.View.section.StatelessSection;
+import com.code12.anycast.ViewModel.VideoBeanViewModel;
 import com.code12.anycast.auxilliary.utils.DisplayUtil;
 
 import java.util.ArrayList;
@@ -105,8 +107,8 @@ public class HomeRecommendedSection extends StatelessSection {
                     break;
                 default:
                     //TODO: ??
-//                    VideoDetailsActivity.launch((Activity) mContext,
-//                            bodyBean.getParam(), bodyBean.getCover());
+                    VideoBeanViewModel model = new VideoBeanViewModel(AcApplication.getInstance());
+                    model.parseUrlById(bodyBean.getParam());
                     break;
             }
         });
