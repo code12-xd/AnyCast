@@ -12,6 +12,8 @@ import android.os.StatFs;
 
 import java.io.File;
 
+import androidx.annotation.Nullable;
+
 public class CommonUtil {
     public static boolean isNetworkAvailable(Context context) {
         NetworkInfo info = getNetworkInfo(context);
@@ -81,5 +83,17 @@ public class CommonUtil {
             return blockSizeLong * availableBlocksLong;
         } else
             return 0;
+    }
+
+    /**
+     * Tests two objects for {@link Object#equals(Object)} equality, handling the case where one or
+     * both may be null.
+     *
+     * @param o1 The first object.
+     * @param o2 The second object.
+     * @return {@code o1 == null ? o2 == null : o1.equals(o2)}.
+     */
+    public static boolean areEqual(@Nullable Object o1, @Nullable Object o2) {
+        return o1 == null ? o2 == null : o1.equals(o2);
     }
 }

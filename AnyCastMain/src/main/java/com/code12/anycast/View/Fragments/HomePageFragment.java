@@ -109,7 +109,7 @@ public class HomePageFragment extends BaseFragment
         mViewPager.setOffscreenPageLimit(5);
         mViewPager.setAdapter(mHomeAdapter);
         mSlidingTab.setViewPager(mViewPager);
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(3);
     }
 
     @Override

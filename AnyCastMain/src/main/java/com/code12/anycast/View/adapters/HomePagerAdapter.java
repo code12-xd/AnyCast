@@ -7,6 +7,7 @@ import com.code12.anycast.View.Fragments.GameFragment;
 import com.code12.anycast.View.Fragments.LiveFragment;
 import com.code12.anycast.View.Fragments.NormalVFragment;
 import com.code12.anycast.View.Fragments.RecommendFragment;
+import com.code12.anycast.View.Fragments.SampleFragment;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -36,7 +37,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
                     fragments[position] = GameFragment.newInstance();
                     break;
                 case 3:
-                    fragments[position] = LiveFragment.newInstance();
+                    fragments[position] = SampleFragment.newInstance(); //LiveFragment
                     break;
                 default:
                     break;

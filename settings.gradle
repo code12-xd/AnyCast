@@ -1,2 +1,2 @@
-include ':app', ':playerframework', ':exowrapper', ':ijkwrapper', ':AnyBaseUI'
+include ':AnyCastMain', ':playerframework', ':exowrapper', ':ijkwrapper', ':AnyBaseUI'
 rootProject.name='AnyCast'

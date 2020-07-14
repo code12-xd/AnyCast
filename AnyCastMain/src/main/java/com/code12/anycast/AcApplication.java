@@ -57,6 +57,12 @@ public class AcApplication extends Application implements ThemeUtils.switchColor
                         .setMaxRecordCount(100).build());
 
         PlayerLibrary.init(this);
+
+        try {
+            Class.forName("android.os.AsyncTask");
+         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
