@@ -15,14 +15,13 @@ import com.code12.anycast.AcApplication;
 import com.code12.anycast.Model.types.NormalVListInfo;
 import com.code12.anycast.Model.types.NormalVideoInfo;
 import com.code12.anycast.R;
-import com.code12.anycast.View.Activitys.VideoPlayActivity;
 import com.code12.anycast.View.Views.CircleImageView;
 import com.code12.anycast.ViewModel.NormalViewModel;
 import com.code12.anycast.auxilliary.utils.LogUtil;
+import com.code12.anyplayer.VideoPlayActivity;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import io.reactivex.Observable;
 
 public class NormalVAdapter extends RecyclerView.Adapter {
     private Context context;

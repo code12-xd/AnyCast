@@ -99,4 +99,5 @@ dependencies {
     implementation project(':playerframework')
     implementation project(':exowrapper')
     implementation project(':ijkwrapper')
+    implementation project(path: ':anyplayer')
 }

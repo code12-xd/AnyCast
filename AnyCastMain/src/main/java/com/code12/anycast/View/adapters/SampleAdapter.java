@@ -9,15 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.code12.anycast.AcApplication;
 import com.code12.anycast.Model.types.SampleInfo;
 import com.code12.anycast.R;
-import com.code12.anycast.View.Activitys.VideoPlayActivity;
 import com.code12.anycast.View.Views.CircleImageView;
-import com.code12.anycast.ViewModel.SampleViewModel;
-import com.code12.anycast.auxilliary.utils.LogUtil;
+import com.code12.anyplayer.VideoPlayActivity;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;

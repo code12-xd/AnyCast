@@ -1,4 +1,4 @@
-package com.code12.anycast.View.Activitys;
+package com.code12.anyplayer;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -8,20 +8,27 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
-import com.code12.anycast.R;
-import com.code12.anycast.View.auxiliary.DataInter;
-import com.code12.anycast.auxilliary.utils.DisplayUtil;
+import com.code12.anyplayer.auxiliary.DataInter;
+import com.code12.anyplayer.auxiliary.DisplayUtil;
+import com.code12.anyplayer.auxiliary.ReceiverGroupManager;
 import com.code12.playerframework.assist.InterEvent;
 import com.code12.playerframework.assist.OnVideoViewEventHandler;
 import com.code12.playerframework.entity.DataSource;
+import com.code12.playerframework.event.OnPlayerEventListener;
 import com.code12.playerframework.player.IPlayer;
+import com.code12.playerframework.receiver.ReceiverGroup;
 import com.code12.playerframework.widget.BaseVideoView;
 
-public class VideoPlayActivity extends BaseActivity {
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+public class VideoPlayActivity extends AppCompatActivity implements OnPlayerEventListener {
     public static final String EXTRA_TITLE = "title";
     public static final String EXTRA_URL = "url";
 
     private BaseVideoView mVideoView;
+    private ReceiverGroup mReceiverGroup;
+
     private String mTitle;
     private String mUrl;
 
@@ -32,29 +39,21 @@ public class VideoPlayActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_video_play);
+        bindViews();
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_video_play;
-    }
-
-    @Override
     protected void bindViews() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mVideoView = findViewById(R.id.videoview);
         updateVideo(false);
+        mReceiverGroup = ReceiverGroupManager.get().getReceiverGroup(this);
+        mReceiverGroup.getGroupValue().putBoolean(DataInter.Key.KEY_CONTROLLER_TOP_ENABLE, true);
+        mVideoView.setReceiverGroup(mReceiverGroup);
         mVideoView.setEventHandler(onVideoViewEventHandler);
-    }
-
-    @Override
-    protected void initViews(Bundle savedInstanceState) {
-    }
-
-    @Override
-    protected void initToolbar() {
+        mVideoView.setOnPlayerEventListener(this);
     }
 
     @Override
@@ -172,6 +171,14 @@ public class VideoPlayActivity extends BaseActivity {
             mVideoView.setDataSource(dataSource);
             mVideoView.start();
             hasStart = true;
+        }
+    }
+
+    @Override
+    public void onPlayerEvent(int eventCode, Bundle bundle) {
+        switch (eventCode){
+            case OnPlayerEventListener.PLAYER_EVENT_ON_VIDEO_RENDER_START:
+                break;
         }
     }
 }
