@@ -7,9 +7,9 @@ import com.bilibili.magicasakura.utils.ThemeUtils;
 import com.code12.anycast.View.auxiliary.ThemeHelper;
 import com.code12.exowrapper.ExoMediaPlayer;
 import com.code12.ijkwrapper.IjkPlayer;
-import com.code12.playerframework.config.PlayerConfig;
+import com.code12.playerframework.config.PlayerChooser;
 import com.code12.playerframework.config.PlayerLibrary;
-import com.code12.playerframework.entity.DecoderPlan;
+import com.code12.playerframework.decoder.DecoderPlan;
 import com.code12.playerframework.record.PlayRecordManager;
 import com.facebook.stetho.Stetho;
 
@@ -43,20 +43,20 @@ public class AcApplication extends Application implements ThemeUtils.switchColor
                         .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
                         .build());
 
-        PlayerConfig.addDecoderPlan(new DecoderPlan(PLAN_ID_IJK, IjkPlayer.class.getName(), "IjkPlayer"));
-        PlayerConfig.addDecoderPlan(new DecoderPlan(PLAN_ID_EXO, ExoMediaPlayer.class.getName(), "ExoPlayer"));
-        PlayerConfig.setDefaultPlanId(PLAN_ID_EXO);
+        PlayerChooser.addDecoderPlan(new DecoderPlan(PLAN_ID_IJK, IjkPlayer.class.getName(), "IjkPlayer"));
+        PlayerChooser.addDecoderPlan(new DecoderPlan(PLAN_ID_EXO, ExoMediaPlayer.class.getName(), "ExoPlayer"));
+        PlayerChooser.setDefaultPlanId(PLAN_ID_EXO);
 
         //use default NetworkEventProducer.
-        PlayerConfig.setUseDefaultNetworkEventProducer(true);
+        PlayerChooser.setUseDefaultNetworkEventProducer(true);
 
-        PlayerConfig.playRecord(true);
+        PlayerChooser.playRecord(true);
 
         PlayRecordManager.setRecordConfig(
                 new PlayRecordManager.RecordConfig.Builder()
                         .setMaxRecordCount(100).build());
 
-        PlayerLibrary.init(this);
+        PlayerLibrary.attach(this);
 
         try {
             Class.forName("android.os.AsyncTask");

@@ -35,7 +35,7 @@ import android.widget.TextView;
 
 import com.code12.anyplayer.R;
 import com.code12.anyplayer.auxiliary.DataInter;
-import com.code12.playerframework.entity.DataSource;
+import com.code12.playerframework.source.MediaSource;
 import com.code12.playerframework.event.BundlePool;
 import com.code12.playerframework.event.EventKey;
 import com.code12.playerframework.event.OnPlayerEventListener;
@@ -117,7 +117,7 @@ public class ControllerCover extends BaseCover implements OnTimerUpdateListener,
     @Override
     protected void onCoverAttachedToWindow() {
         super.onCoverAttachedToWindow();
-        DataSource dataSource = getGroupValue().get(DataInter.Key.KEY_DATA_SOURCE);
+        MediaSource dataSource = getGroupValue().get(DataInter.Key.KEY_DATA_SOURCE);
         setTitle(dataSource);
 
         boolean topEnable = getGroupValue().getBoolean(DataInter.Key.KEY_CONTROLLER_TOP_ENABLE, false);
@@ -198,7 +198,7 @@ public class ControllerCover extends BaseCover implements OnTimerUpdateListener,
             }else if(key.equals(DataInter.Key.KEY_TIMER_UPDATE_ENABLE)){
                 mTimerUpdateProgressEnable = (boolean) value;
             }else if(key.equals(DataInter.Key.KEY_DATA_SOURCE)){
-                DataSource dataSource = (DataSource) value;
+                MediaSource dataSource = (MediaSource) value;
                 setTitle(dataSource);
             }
         }
@@ -239,7 +239,7 @@ public class ControllerCover extends BaseCover implements OnTimerUpdateListener,
         }
     };
 
-    private void setTitle(DataSource dataSource){
+    private void setTitle(MediaSource dataSource){
         if(dataSource!=null){
             String title = dataSource.getTitle();
             if(!TextUtils.isEmpty(title)){
@@ -425,7 +425,7 @@ public class ControllerCover extends BaseCover implements OnTimerUpdateListener,
                 mTimeFormat = null;
                 updateUI(0, 0);
                 setBottomSeekBarState(true);
-                DataSource data = (DataSource) bundle.getSerializable(EventKey.SERIALIZABLE_DATA);
+                MediaSource data = (MediaSource) bundle.getSerializable(EventKey.SERIALIZABLE_DATA);
                 getGroupValue().putObject(DataInter.Key.KEY_DATA_SOURCE, data);
                 setTitle(data);
                 break;

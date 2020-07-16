@@ -1,19 +1,20 @@
 /*
- * Copyright 2017 jiajunhui<junhui_jia@163.com>
+ * Copyright (C) 2020 code12
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *  Created by code12, 2020-07-15.
  */
-
 package com.code12.playerframework.player;
 
 import android.content.Context;
@@ -28,9 +29,9 @@ import android.text.TextUtils;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.code12.playerframework.config.AppContextAttach;
-import com.code12.playerframework.entity.DataSource;
-import com.code12.playerframework.entity.TimedTextSource;
+import com.code12.playerframework.config.PlayerLibrary;
+import com.code12.playerframework.source.MediaSource;
+import com.code12.playerframework.source.TimedTextSource;
 import com.code12.playerframework.event.BundlePool;
 import com.code12.playerframework.event.EventKey;
 import com.code12.playerframework.event.OnErrorEventListener;
@@ -38,10 +39,6 @@ import com.code12.playerframework.event.OnPlayerEventListener;
 import com.code12.playerframework.log.PLog;
 
 import java.util.HashMap;
-
-/**
- * Created by Taurus on 2018/3/17.
- */
 
 public class SysMediaPlayer extends BaseInternalPlayer {
 
@@ -55,7 +52,7 @@ public class SysMediaPlayer extends BaseInternalPlayer {
 
     private long mBandWidth;
 
-    private DataSource mDataSource;
+    private MediaSource mDataSource;
 
     public SysMediaPlayer() {
         init();
@@ -66,7 +63,7 @@ public class SysMediaPlayer extends BaseInternalPlayer {
     }
 
     @Override
-    public void setDataSource(DataSource dataSource) {
+    public void setDataSource(MediaSource dataSource) {
         try {
             if(mMediaPlayer==null){
                 mMediaPlayer = new MediaPlayer();
@@ -86,7 +83,7 @@ public class SysMediaPlayer extends BaseInternalPlayer {
             updateStatus(STATE_INITIALIZED);
 
             this.mDataSource = dataSource;
-            Context applicationContext = AppContextAttach.getApplicationContext();
+            Context applicationContext = PlayerLibrary.getApplicationContext();
             String data = dataSource.getData();
             Uri uri = dataSource.getUri();
             String assetsPath = dataSource.getAssetsPath();
@@ -101,7 +98,7 @@ public class SysMediaPlayer extends BaseInternalPlayer {
                     mMediaPlayer.setDataSource(applicationContext, uri, headers);
             }else if(!TextUtils.isEmpty(assetsPath)){
                 //assets play. use FileDescriptor play
-                AssetFileDescriptor fileDescriptor = DataSource.getAssetsFileDescriptor(
+                AssetFileDescriptor fileDescriptor = MediaSource.getAssetsFileDescriptor(
                         applicationContext, dataSource.getAssetsPath());
                 if(fileDescriptor!=null){
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N){
@@ -112,7 +109,7 @@ public class SysMediaPlayer extends BaseInternalPlayer {
                     }
                 }
             }else if(rawId > 0){
-                Uri rawUri = DataSource.buildRawPath(applicationContext.getPackageName(), rawId);
+                Uri rawUri = MediaSource.buildRawPath(applicationContext.getPackageName(), rawId);
                 mMediaPlayer.setDataSource(applicationContext, rawUri);
             }
 

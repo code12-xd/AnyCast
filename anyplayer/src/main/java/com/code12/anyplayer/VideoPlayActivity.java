@@ -1,6 +1,5 @@
 package com.code12.anyplayer;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -13,20 +12,19 @@ import com.code12.anyplayer.auxiliary.DisplayUtil;
 import com.code12.anyplayer.auxiliary.ReceiverGroupManager;
 import com.code12.playerframework.assist.InterEvent;
 import com.code12.playerframework.assist.OnVideoViewEventHandler;
-import com.code12.playerframework.entity.DataSource;
+import com.code12.playerframework.source.MediaSource;
 import com.code12.playerframework.event.OnPlayerEventListener;
 import com.code12.playerframework.player.IPlayer;
 import com.code12.playerframework.receiver.ReceiverGroup;
-import com.code12.playerframework.widget.BaseVideoView;
+import com.code12.playerframework.ui.PlayerPolyFrameLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class VideoPlayActivity extends AppCompatActivity implements OnPlayerEventListener {
     public static final String EXTRA_TITLE = "title";
     public static final String EXTRA_URL = "url";
 
-    private BaseVideoView mVideoView;
+    private PlayerPolyFrameLayout mVideoView;
     private ReceiverGroup mReceiverGroup;
 
     private String mTitle;
@@ -109,7 +107,7 @@ public class VideoPlayActivity extends AppCompatActivity implements OnPlayerEven
 
     private OnVideoViewEventHandler onVideoViewEventHandler = new OnVideoViewEventHandler(){
         @Override
-        public void onAssistHandle(BaseVideoView assist, int eventCode, Bundle bundle) {
+        public void onAssistHandle(PlayerPolyFrameLayout assist, int eventCode, Bundle bundle) {
             super.onAssistHandle(assist, eventCode, bundle);
             switch (eventCode){
                 case InterEvent.CODE_REQUEST_PAUSE:
@@ -134,7 +132,7 @@ public class VideoPlayActivity extends AppCompatActivity implements OnPlayerEven
         }
 
         @Override
-        public void requestRetry(BaseVideoView videoView, Bundle bundle) {
+        public void requestRetry(PlayerPolyFrameLayout videoView, Bundle bundle) {
             if(DisplayUtil.isTopActivity(VideoPlayActivity.this)){
                 super.requestRetry(videoView, bundle);
             }
@@ -142,7 +140,7 @@ public class VideoPlayActivity extends AppCompatActivity implements OnPlayerEven
     };
 
     private void replay(){
-        mVideoView.setDataSource(new DataSource(mUrl));
+        mVideoView.setDataSource(new MediaSource(mUrl));
         mVideoView.start();
     }
 
@@ -166,7 +164,7 @@ public class VideoPlayActivity extends AppCompatActivity implements OnPlayerEven
 
     private void initPlay(){
         if(!hasStart && mUrl != null) {
-            DataSource dataSource = new DataSource(mUrl);
+            MediaSource dataSource = new MediaSource(mUrl);
             dataSource.setTitle(mTitle);
             mVideoView.setDataSource(dataSource);
             mVideoView.start();

@@ -1,29 +1,31 @@
 /*
- * Copyright 2017 jiajunhui<junhui_jia@163.com>
+ * Copyright (C) 2020 code12
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *  Created by code12, 2020-07-15.
+ *  Player control class, start/stop....
  */
-
 package com.code12.playerframework;
 
 import android.os.Bundle;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.code12.playerframework.config.PlayerConfig;
+import com.code12.playerframework.config.PlayerChooser;
 import com.code12.playerframework.config.PlayerLoader;
-import com.code12.playerframework.entity.DataSource;
-import com.code12.playerframework.entity.DecoderPlan;
+import com.code12.playerframework.source.MediaSource;
+import com.code12.playerframework.decoder.DecoderPlan;
 import com.code12.playerframework.event.BundlePool;
 import com.code12.playerframework.event.EventKey;
 import com.code12.playerframework.event.OnErrorEventListener;
@@ -38,10 +40,6 @@ import com.code12.playerframework.provider.IDataProvider;
 import com.code12.playerframework.record.PlayValueGetter;
 import com.code12.playerframework.record.RecordProxyPlayer;
 
-/**
- * Created by Taurus on 2018/3/17.
- */
-
 public final class AVPlayer implements IPlayer{
 
     private final String TAG = "AVPlayer";
@@ -52,7 +50,7 @@ public final class AVPlayer implements IPlayer{
     private IDataProvider mDataProvider;
 
     //you can set url,uri,headers etc.
-    private DataSource mDataSource;
+    private MediaSource mDataSource;
 
     private OnPlayerEventListener mOnPlayerEventListener;
     private OnErrorEventListener mOnErrorEventListener;
@@ -70,7 +68,7 @@ public final class AVPlayer implements IPlayer{
 
     public AVPlayer(){
         //default load config plan id.
-        this(PlayerConfig.getDefaultPlanId());
+        this(PlayerChooser.getDefaultPlanId());
     }
 
     /**
@@ -86,7 +84,7 @@ public final class AVPlayer implements IPlayer{
     }
 
     private void handleRecordProxy() {
-        if(PlayerConfig.isPlayRecordOpen()){
+        if(PlayerChooser.isPlayRecordOpen()){
             mRecordProxyPlayer = new RecordProxyPlayer(new PlayValueGetter() {
                 @Override
                 public int getCurrentPosition() {
@@ -124,7 +122,7 @@ public final class AVPlayer implements IPlayer{
             throw new RuntimeException(
                     "init decoder instance failure, please check your configuration" +
                             ", maybe your config classpath not found.");
-        DecoderPlan plan = PlayerConfig.getPlan(mDecoderPlanId);
+        DecoderPlan plan = PlayerChooser.getPlan(mDecoderPlanId);
         if(plan!=null){
             PLog.d(TAG,"=============================");
             PLog.d(TAG,"DecoderPlanInfo : planId      = " + plan.getIdNumber());
@@ -140,7 +138,7 @@ public final class AVPlayer implements IPlayer{
      * and the subsequent operations after switching must be processed by yourself,
      * such as resetting the data to play and so on.
      * after switch, if you want get current planId,
-     * you can get it by {@link PlayerConfig#getDefaultPlanId()}
+     * you can get it by {@link PlayerChooser#getDefaultPlanId()}
      *
      * @param decoderPlanId the planId is your configuration ids or default id.
      * @return Whether or not to switch to success.
@@ -155,7 +153,7 @@ public final class AVPlayer implements IPlayer{
                     "@@Your incoming planId is the same as the current use planId@@");
             return false;
         }
-        if(PlayerConfig.isLegalPlanId(decoderPlanId)){
+        if(PlayerChooser.isLegalPlanId(decoderPlanId)){
             //and reload internal player instance.
             loadInternalPlayer(decoderPlanId);
             return true;
@@ -302,7 +300,7 @@ public final class AVPlayer implements IPlayer{
 
     /**
      * if you need , you can set a data provider.{@link IDataProvider}
-     * you need call this method before {@link this#setDataSource(DataSource)}.
+     * you need call this method before {@link this#setDataSource(MediaSource)}.
      * @param dataProvider
      */
     public void setDataProvider(IDataProvider dataProvider){
@@ -332,10 +330,10 @@ public final class AVPlayer implements IPlayer{
                 case IDataProvider.PROVIDER_CODE_SUCCESS_MEDIA_DATA:
                     if(bundle!=null){
                         Object obj = bundle.getSerializable(EventKey.SERIALIZABLE_DATA);
-                        if(obj==null || !(obj instanceof DataSource)){
+                        if(obj==null || !(obj instanceof MediaSource)){
                             throw new RuntimeException("provider media success SERIALIZABLE_DATA must type of DataSource!");
                         }
-                        DataSource data = (DataSource) obj;
+                        MediaSource data = (MediaSource) obj;
                         PLog.d(TAG,"onProviderDataSuccessMediaData : DataSource = " + data);
                         interPlayerSetDataSource(data);
                         internalPlayerStart(data.getStartPos());
@@ -374,7 +372,7 @@ public final class AVPlayer implements IPlayer{
     };
 
     @Override
-    public void setDataSource(DataSource dataSource) {
+    public void setDataSource(MediaSource dataSource) {
         this.mDataSource = dataSource;
         //when data source update, attach listener.
         initListener();
@@ -388,7 +386,7 @@ public final class AVPlayer implements IPlayer{
         return mDataSource!=null && mDataSource.isLive();
     }
 
-    private void interPlayerSetDataSource(DataSource dataSource){
+    private void interPlayerSetDataSource(MediaSource dataSource){
         if(isPlayerAvailable()){
             if(isPlayRecordOpen())
                 mRecordProxyPlayer.onDataSourceReady(dataSource);
@@ -407,14 +405,14 @@ public final class AVPlayer implements IPlayer{
         }
     }
 
-    int getRecord(DataSource dataSource){
+    int getRecord(MediaSource dataSource){
         if(isPlayRecordOpen() && dataSource!=null)
             return mRecordProxyPlayer.getRecord(dataSource);
         return mDataSource!=null?mDataSource.getStartPos():0;
     }
 
     boolean isPlayRecordOpen(){
-        return PlayerConfig.isPlayRecordOpen() && mRecordProxyPlayer!=null;
+        return PlayerChooser.isPlayRecordOpen() && mRecordProxyPlayer!=null;
     }
 
     /**

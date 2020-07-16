@@ -1,36 +1,29 @@
 /*
- * Copyright 2017 jiajunhui<junhui_jia@163.com>
+ * Copyright (C) 2020 code12
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *  Created by code12, 2020-07-15.
+ *  To adapt the real player framework.
  */
-
 package com.code12.playerframework.config;
 
-import com.code12.playerframework.entity.DecoderPlan;
+import com.code12.playerframework.decoder.DecoderPlan;
 import com.code12.playerframework.player.SysMediaPlayer;
 
 import androidx.collection.SparseArrayCompat;
 
-/**
- * Created by Taurus on 2018/3/17.
- *
- * The configuration of the player is used for
- * the management of the decoder scheme.
- * You can add more than one decoding scheme.
- *
- */
-
-public class PlayerConfig {
+public class PlayerChooser {
 
     public static final int DEFAULT_PLAN_ID = 0;
 
@@ -96,7 +89,7 @@ public class PlayerConfig {
 
     //if you want to use default NetworkEventProducer, set it true.
     public static void setUseDefaultNetworkEventProducer(boolean useDefaultNetworkEventProducer) {
-        PlayerConfig.useDefaultNetworkEventProducer = useDefaultNetworkEventProducer;
+        PlayerChooser.useDefaultNetworkEventProducer = useDefaultNetworkEventProducer;
     }
 
     public static boolean isUseDefaultNetworkEventProducer() {

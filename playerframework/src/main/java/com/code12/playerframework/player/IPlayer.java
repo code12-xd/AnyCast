@@ -22,7 +22,7 @@ import android.os.Bundle;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.code12.playerframework.entity.DataSource;
+import com.code12.playerframework.source.MediaSource;
 import com.code12.playerframework.event.OnErrorEventListener;
 import com.code12.playerframework.event.OnPlayerEventListener;
 
@@ -46,7 +46,7 @@ public interface IPlayer {
      */
     void option(int code, Bundle bundle);
 
-    void setDataSource(DataSource dataSource);
+    void setDataSource(MediaSource dataSource);
     void setDisplay(SurfaceHolder surfaceHolder);
     void setSurface(Surface surface);
     void setVolume(float left, float right);

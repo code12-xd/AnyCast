@@ -1,32 +1,26 @@
 /*
- * Copyright 2017 jiajunhui<junhui_jia@163.com>
+ * Copyright (C) 2020 code12
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *  Created by code12, 2020-07-15.
+ *  To adapt the real player framework.
  */
-
 package com.code12.playerframework.config;
 
 import com.code12.playerframework.player.BaseInternalPlayer;
 
 import java.lang.reflect.Constructor;
-
-/**
- * Created by Taurus on 2018/3/17.
- *
- * The decoder instance loader is loaded
- * according to the decoding scheme you set.
- *
- */
 
 public class PlayerLoader {
 
@@ -46,7 +40,7 @@ public class PlayerLoader {
     public static Object getDecoderInstance(int planId){
         Object instance = null;
         try{
-            Class clz = getSDKClass(PlayerConfig.getPlan(planId).getClassPath());
+            Class clz = getSDKClass(PlayerChooser.getPlan(planId).getClassPath());
             if(clz!=null){
                 Constructor constructor = getConstructor(clz);
                 if(constructor!=null){
@@ -78,5 +72,4 @@ public class PlayerLoader {
         }
         return result;
     }
-
 }

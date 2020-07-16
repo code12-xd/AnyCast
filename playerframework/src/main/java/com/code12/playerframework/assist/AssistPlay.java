@@ -20,7 +20,7 @@ package com.code12.playerframework.assist;
 
 import android.view.ViewGroup;
 
-import com.code12.playerframework.entity.DataSource;
+import com.code12.playerframework.source.MediaSource;
 import com.code12.playerframework.event.OnErrorEventListener;
 import com.code12.playerframework.event.OnPlayerEventListener;
 import com.code12.playerframework.provider.IDataProvider;
@@ -48,7 +48,7 @@ public interface AssistPlay {
 
     void attachContainer(ViewGroup userContainer);
 
-    void setDataSource(DataSource dataSource);
+    void setDataSource(MediaSource dataSource);
 
     void play();
     void play(boolean updateRender);

@@ -1,20 +1,22 @@
 /*
- * Copyright 2017 jiajunhui<junhui_jia@163.com>
+ * Copyright (C) 2020 code12
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *  Created by code12, 2020-07-15.
+ *  Source class to resolve the media data.
  */
-
-package com.code12.playerframework.entity;
+package com.code12.playerframework.source;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -28,87 +30,35 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 
-/**
- * Created by Taurus on 2018/3/17.
- *
- * if you have video url ,please set it to data field.{@link DataSource#data}
- *
- * if you use DataProvider{@link IDataProvider},According to yourself needs,
- * set them to the corresponding fields. For example, you need to use a long id
- * to get playback address, you can set the long id to id field{@link DataSource#id}.
- *
- */
-
-public class DataSource implements Serializable {
-
-    /**
-     * extension field, you can use it if you need.
-     */
+public class MediaSource implements Serializable {
     private String tag;
-
-    /**
-     * extension field, you can use it if you need.
-     */
     private String sid;
 
     /**
      * Usually it's a video url.
      */
     private String data;
-
-    /**
-     * you can set video name to it.
-     */
     private String title;
-
-    /**
-     * extension field, you can use it if you need.
-     */
     private long id;
-
-    /**
-     * if you want set uri data,you can use this filed.
-     */
     private Uri uri;
-
-    /**
-     * if you want set some data to decoder
-     * or some extra data, you can set this field.
-     */
     private HashMap<String, String> extra;
 
-    /**
-     * timed text source for video
-     */
     private TimedTextSource timedTextSource;
 
-    //delete 2018/11/17
-//    private FileDescriptor fileDescriptor;
-//
-//    private AssetFileDescriptor assetFileDescriptor;
-
-    //eg. a video folder in assets, the path name is video/xxx.mp4
     private String assetsPath;
-
-    //when play android raw resource, set this.
     private int rawId = -1;
 
-    /**
-     * If you want to start play at a specified time,
-     * please set this field.
-     */
     private int startPos;
-
     private boolean isLive;
 
-    public DataSource() {
+    public MediaSource() {
     }
 
-    public DataSource(String data) {
+    public MediaSource(String data) {
         this.data = data;
     }
 
-    public DataSource(String tag, String data) {
+    public MediaSource(String tag, String data) {
         this.tag = tag;
         this.data = data;
     }
@@ -226,23 +176,5 @@ public class DataSource implements Serializable {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public String toString() {
-        return "DataSource{" +
-                "tag='" + tag + '\'' +
-                ", sid='" + sid + '\'' +
-                ", data='" + data + '\'' +
-                ", title='" + title + '\'' +
-                ", id=" + id +
-                ", uri=" + uri +
-                ", extra=" + extra +
-                ", timedTextSource=" + timedTextSource +
-                ", assetsPath='" + assetsPath + '\'' +
-                ", rawId=" + rawId +
-                ", startPos=" + startPos +
-                ", isLive=" + isLive +
-                '}';
     }
 }

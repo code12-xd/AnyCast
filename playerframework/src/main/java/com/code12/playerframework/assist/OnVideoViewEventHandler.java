@@ -5,16 +5,16 @@ package com.code12.playerframework.assist;
 
 import android.os.Bundle;
 
-import com.code12.playerframework.entity.DataSource;
+import com.code12.playerframework.source.MediaSource;
 import com.code12.playerframework.event.EventKey;
 import com.code12.playerframework.log.PLog;
 import com.code12.playerframework.player.IPlayer;
-import com.code12.playerframework.widget.BaseVideoView;
+import com.code12.playerframework.ui.PlayerPolyFrameLayout;
 
-public class OnVideoViewEventHandler extends BaseEventAssistHandler<BaseVideoView> {
+public class OnVideoViewEventHandler extends BaseEventAssistHandler<PlayerPolyFrameLayout> {
 
     @Override
-    public void requestPause(BaseVideoView videoView, Bundle bundle) {
+    public void requestPause(PlayerPolyFrameLayout videoView, Bundle bundle) {
         if(isInPlaybackState(videoView)){
             videoView.pause();
         }else{
@@ -23,7 +23,7 @@ public class OnVideoViewEventHandler extends BaseEventAssistHandler<BaseVideoVie
     }
 
     @Override
-    public void requestResume(BaseVideoView videoView, Bundle bundle) {
+    public void requestResume(PlayerPolyFrameLayout videoView, Bundle bundle) {
         if(isInPlaybackState(videoView)){
             videoView.resume();
         }else{
@@ -32,7 +32,7 @@ public class OnVideoViewEventHandler extends BaseEventAssistHandler<BaseVideoVie
     }
 
     @Override
-    public void requestSeek(BaseVideoView videoView, Bundle bundle) {
+    public void requestSeek(PlayerPolyFrameLayout videoView, Bundle bundle) {
         int pos = 0;
         if(bundle!=null){
             pos = bundle.getInt(EventKey.INT_DATA);
@@ -41,17 +41,17 @@ public class OnVideoViewEventHandler extends BaseEventAssistHandler<BaseVideoVie
     }
 
     @Override
-    public void requestStop(BaseVideoView videoView, Bundle bundle) {
+    public void requestStop(PlayerPolyFrameLayout videoView, Bundle bundle) {
         videoView.stop();
     }
 
     @Override
-    public void requestReset(BaseVideoView videoView, Bundle bundle) {
+    public void requestReset(PlayerPolyFrameLayout videoView, Bundle bundle) {
         videoView.stop();
     }
 
     @Override
-    public void requestRetry(BaseVideoView videoView, Bundle bundle) {
+    public void requestRetry(PlayerPolyFrameLayout videoView, Bundle bundle) {
         int pos = 0;
         if(bundle!=null){
             pos = bundle.getInt(EventKey.INT_DATA);
@@ -60,14 +60,14 @@ public class OnVideoViewEventHandler extends BaseEventAssistHandler<BaseVideoVie
     }
 
     @Override
-    public void requestReplay(BaseVideoView videoView, Bundle bundle) {
+    public void requestReplay(PlayerPolyFrameLayout videoView, Bundle bundle) {
         videoView.rePlay(0);
     }
 
     @Override
-    public void requestPlayDataSource(BaseVideoView assist, Bundle bundle) {
+    public void requestPlayDataSource(PlayerPolyFrameLayout assist, Bundle bundle) {
         if(bundle!=null){
-            DataSource data = (DataSource) bundle.getSerializable(EventKey.SERIALIZABLE_DATA);
+            MediaSource data = (MediaSource) bundle.getSerializable(EventKey.SERIALIZABLE_DATA);
             if(data==null){
                 PLog.e("OnVideoViewEventHandler","requestPlayDataSource need legal data source");
                 return;
@@ -78,7 +78,7 @@ public class OnVideoViewEventHandler extends BaseEventAssistHandler<BaseVideoVie
         }
     }
 
-    private boolean isInPlaybackState(BaseVideoView videoView) {
+    private boolean isInPlaybackState(PlayerPolyFrameLayout videoView) {
         int state = videoView.getState();
         return state!= IPlayer.STATE_END
                 && state!= IPlayer.STATE_ERROR

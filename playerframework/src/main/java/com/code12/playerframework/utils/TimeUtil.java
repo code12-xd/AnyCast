@@ -1,30 +1,8 @@
-/*
- * Copyright 2017 jiajunhui<junhui_jia@163.com>
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
-
 package com.code12.playerframework.utils;
 
 import android.text.TextUtils;
 
-/**
- * ------------------------------------
- * Created by Taurus on 2016/8/3.
- * ------------------------------------
- */
 public class TimeUtil {
-
     private static final long SECONDS_ONE_HOUR = 60*60;
 
     public static final String TIME_FORMAT_01 = "%02d:%02d";
@@ -72,5 +50,4 @@ public class TimeUtil {
         }
         return String.format(format, hours, minutes, seconds);
     }
-
 }

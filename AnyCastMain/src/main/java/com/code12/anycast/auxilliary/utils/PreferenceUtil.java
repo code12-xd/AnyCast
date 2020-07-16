@@ -11,6 +11,8 @@ import android.preference.PreferenceManager;
 import com.code12.anycast.AcApplication;
 
 public final class PreferenceUtil {
+    public final static String KEY_PLAYER_CHOOSER = "PlayerChooser";
+
     public static void reset(final Context context) {
         SharedPreferences.Editor edit = PreferenceManager.getDefaultSharedPreferences(context).edit();
         edit.clear();

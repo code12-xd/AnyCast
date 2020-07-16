@@ -1,19 +1,22 @@
 /*
- * Copyright 2017 jiajunhui<junhui_jia@163.com>
+ * Copyright (C) 2020 code12
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *  Created by code12, 2020-07-15.
+ * The event dispatcher of the framework is used to
+ * distribute playback events, error events and receiver events.
  */
-
 package com.code12.playerframework.event;
 
 import android.os.Bundle;
@@ -25,27 +28,13 @@ import com.code12.playerframework.receiver.IReceiver;
 import com.code12.playerframework.receiver.IReceiverGroup;
 import com.code12.playerframework.touch.OnTouchGestureListener;
 
-/**
- * Created by Taurus on 2018/4/14.
- *
- * The event dispatcher of the framework is used to
- * distribute playback events, error events and receiver events.
- *
- */
-
 public final class EventDispatcher implements IEventDispatcher{
-
     private IReceiverGroup mReceiverGroup;
 
     public EventDispatcher(IReceiverGroup receiverGroup){
         this.mReceiverGroup = receiverGroup;
     }
 
-    /**
-     * dispatch play event
-     * @param eventCode
-     * @param bundle
-     */
     @Override
     public void dispatchPlayEvent(final int eventCode, final Bundle bundle){
         DebugLog.onPlayEventLog(eventCode, bundle);
@@ -75,11 +64,6 @@ public final class EventDispatcher implements IEventDispatcher{
         recycleBundle(bundle);
     }
 
-    /**
-     * dispatch error event
-     * @param eventCode
-     * @param bundle
-     */
     @Override
     public void dispatchErrorEvent(final int eventCode, final Bundle bundle){
         DebugLog.onErrorEventLog(eventCode, bundle);
@@ -97,12 +81,6 @@ public final class EventDispatcher implements IEventDispatcher{
         dispatchReceiverEvent(eventCode, bundle, null);
     }
 
-    /**
-     * dispatch receivers event
-     * @param eventCode
-     * @param bundle
-     * @param onReceiverFilter
-     */
     @Override
     public void dispatchReceiverEvent(final int eventCode, final Bundle bundle, IReceiverGroup.OnReceiverFilter onReceiverFilter) {
         mReceiverGroup.forEach(onReceiverFilter, new IReceiverGroup.OnLoopListener() {
@@ -114,12 +92,6 @@ public final class EventDispatcher implements IEventDispatcher{
         recycleBundle(bundle);
     }
 
-    /**
-     * dispatch producer event
-     * @param eventCode
-     * @param bundle
-     * @param onReceiverFilter
-     */
     @Override
     public void dispatchProducerEvent(final int eventCode, final Bundle bundle, IReceiverGroup.OnReceiverFilter onReceiverFilter) {
         mReceiverGroup.forEach(onReceiverFilter, new IReceiverGroup.OnLoopListener() {
@@ -131,12 +103,6 @@ public final class EventDispatcher implements IEventDispatcher{
         recycleBundle(bundle);
     }
 
-    /**
-     * dispatch producer data
-     * @param key
-     * @param data
-     * @param onReceiverFilter
-     */
     @Override
     public void dispatchProducerData(final String key, final Object data, IReceiverGroup.OnReceiverFilter onReceiverFilter) {
         mReceiverGroup.forEach(onReceiverFilter, new IReceiverGroup.OnLoopListener() {
@@ -146,8 +112,6 @@ public final class EventDispatcher implements IEventDispatcher{
             }
         });
     }
-
-    //-----------------------------------dispatch gesture touch event-----------------------------------
 
     @Override
     public void dispatchTouchEventOnSingleTabUp(final MotionEvent event) {

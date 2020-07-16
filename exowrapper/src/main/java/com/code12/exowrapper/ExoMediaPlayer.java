@@ -1,19 +1,20 @@
 /*
- * Copyright 2017 jiajunhui<junhui_jia@163.com>
+ * Copyright (C) 2020 code12
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *  Created by code12, 2020-07-15.
  */
-
 package com.code12.exowrapper;
 
 import android.content.Context;
@@ -32,7 +33,6 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
 import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
@@ -50,12 +50,11 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.RawResourceDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
-import com.code12.playerframework.config.AppContextAttach;
-import com.code12.playerframework.config.PlayerConfig;
+import com.code12.playerframework.config.PlayerChooser;
 import com.code12.playerframework.config.PlayerLibrary;
-import com.code12.playerframework.entity.DataSource;
-import com.code12.playerframework.entity.DecoderPlan;
-import com.code12.playerframework.entity.TimedTextSource;
+import com.code12.playerframework.source.MediaSource;
+import com.code12.playerframework.decoder.DecoderPlan;
+import com.code12.playerframework.source.TimedTextSource;
 import com.code12.playerframework.event.BundlePool;
 import com.code12.playerframework.event.EventKey;
 import com.code12.playerframework.event.OnErrorEventListener;
@@ -86,16 +85,16 @@ public class ExoMediaPlayer extends BaseInternalPlayer {
     private final DefaultBandwidthMeter mBandwidthMeter;
 
     public static void init(Context context){
-        PlayerConfig.addDecoderPlan(new DecoderPlan(
+        PlayerChooser.addDecoderPlan(new DecoderPlan(
                 PLAN_ID,
                 ExoMediaPlayer.class.getName(),
                 "exoplayer"));
-        PlayerConfig.setDefaultPlanId(PLAN_ID);
-        PlayerLibrary.init(context);
+        PlayerChooser.setDefaultPlanId(PLAN_ID);
+        PlayerLibrary.attach(context);
     }
 
     public ExoMediaPlayer(){
-        mAppContext = AppContextAttach.getApplicationContext();
+        mAppContext = PlayerLibrary.getApplicationContext();
         RenderersFactory renderersFactory = new DefaultRenderersFactory(mAppContext);
         DefaultTrackSelector trackSelector =
                 new DefaultTrackSelector(mAppContext);
@@ -110,7 +109,7 @@ public class ExoMediaPlayer extends BaseInternalPlayer {
     }
 
     @Override
-    public void setDataSource(DataSource dataSource) {
+    public void setDataSource(MediaSource dataSource) {
         updateStatus(STATE_INITIALIZED);
         mInternalPlayer.addVideoListener(mVideoListener);
         String data = dataSource.getData();
@@ -126,7 +125,7 @@ public class ExoMediaPlayer extends BaseInternalPlayer {
             videoUri = uri;
         }else if(!TextUtils.isEmpty(assetsPath)){
             try {
-                DataSpec dataSpec = new DataSpec(DataSource.buildAssetsUri(assetsPath));
+                DataSpec dataSpec = new DataSpec(MediaSource.buildAssetsUri(assetsPath));
                 AssetDataSource assetDataSource = new AssetDataSource(mAppContext);
                 assetDataSource.open(dataSpec);
                 videoUri = assetDataSource.getUri();
@@ -176,13 +175,13 @@ public class ExoMediaPlayer extends BaseInternalPlayer {
         isPreparing = true;
 
         //create MediaSource
-        MediaSource mediaSource = getMediaSource(videoUri, dataSourceFactory);
+        com.google.android.exoplayer2.source.MediaSource mediaSource = getMediaSource(videoUri, dataSourceFactory);
 
         //handle timed text source
         TimedTextSource timedTextSource = dataSource.getTimedTextSource();
         if(timedTextSource!=null){
             Format format = Format.createTextSampleFormat(null, timedTextSource.getMimeType(), timedTextSource.getFlag(), null);
-            MediaSource timedTextMediaSource = new SingleSampleMediaSource.Factory(new DefaultDataSourceFactory(mAppContext,
+            com.google.android.exoplayer2.source.MediaSource timedTextMediaSource = new SingleSampleMediaSource.Factory(new DefaultDataSourceFactory(mAppContext,
                     userAgent))
                     .createMediaSource(Uri.parse(timedTextSource.getPath()), format, C.TIME_UNSET);
             //merge MediaSource and timedTextMediaSource.
@@ -198,7 +197,7 @@ public class ExoMediaPlayer extends BaseInternalPlayer {
 
     }
 
-    private MediaSource getMediaSource(Uri uri, com.google.android.exoplayer2.upstream.DataSource.Factory dataSourceFactory){
+    private com.google.android.exoplayer2.source.MediaSource getMediaSource(Uri uri, com.google.android.exoplayer2.upstream.DataSource.Factory dataSourceFactory){
         int contentType = Util.inferContentType(uri);
         switch (contentType) {
             case C.TYPE_DASH:

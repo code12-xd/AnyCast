@@ -1,0 +1,3 @@
+# AnyPlayer
+播放器模块，提供PlayerActivity，通过intent传入媒体uri即可实现播放。实现播放view，控制控件...
+

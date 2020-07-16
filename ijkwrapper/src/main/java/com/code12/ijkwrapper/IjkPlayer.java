@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2020 code12
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *  Created by code12, 2020-07-15.
+ */
 package com.code12.ijkwrapper;
 
 import android.content.ContentResolver;
@@ -11,11 +28,10 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.code12.playerframework.config.AppContextAttach;
-import com.code12.playerframework.config.PlayerConfig;
+import com.code12.playerframework.config.PlayerChooser;
 import com.code12.playerframework.config.PlayerLibrary;
-import com.code12.playerframework.entity.DataSource;
-import com.code12.playerframework.entity.DecoderPlan;
+import com.code12.playerframework.source.MediaSource;
+import com.code12.playerframework.decoder.DecoderPlan;
 import com.code12.playerframework.event.BundlePool;
 import com.code12.playerframework.event.EventKey;
 import com.code12.playerframework.event.OnErrorEventListener;
@@ -27,10 +43,6 @@ import java.util.HashMap;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
-
-/**
- * Created by Taurus on 2018/4/18.
- */
 
 public class IjkPlayer extends BaseInternalPlayer {
     private final String TAG = "IjkPlayer";
@@ -44,12 +56,12 @@ public class IjkPlayer extends BaseInternalPlayer {
     private int startSeekPos;
 
     public static void init(Context context){
-        PlayerConfig.addDecoderPlan(new DecoderPlan(
+        PlayerChooser.addDecoderPlan(new DecoderPlan(
                 PLAN_ID,
                 IjkPlayer.class.getName(),
                 "ijkplayer"));
-        PlayerConfig.setDefaultPlanId(PLAN_ID);
-        PlayerLibrary.init(context);
+        PlayerChooser.setDefaultPlanId(PLAN_ID);
+        PlayerLibrary.attach(context);
     }
 
     public IjkPlayer() {
@@ -91,13 +103,13 @@ public class IjkPlayer extends BaseInternalPlayer {
     }
 
     @Override
-    public void setDataSource(DataSource data) {
+    public void setDataSource(MediaSource data) {
         if(data!=null){
             openVideo(data);
         }
     }
 
-    private void openVideo(DataSource dataSource) {
+    private void openVideo(MediaSource dataSource) {
         try {
             if(mMediaPlayer==null){
                 mMediaPlayer = new IjkMediaPlayer();
@@ -120,7 +132,7 @@ public class IjkPlayer extends BaseInternalPlayer {
                 PLog.e(TAG,"ijkplayer not support timed text !");
             }
 
-            Context applicationContext = AppContextAttach.getApplicationContext();
+            Context applicationContext = PlayerLibrary.getApplicationContext();
             String data = dataSource.getData();
             Uri uri = dataSource.getUri();
             String assetsPath = dataSource.getAssetsPath();
@@ -144,7 +156,7 @@ public class IjkPlayer extends BaseInternalPlayer {
                 Log.e(TAG,"ijkplayer not support assets play, you can use raw play.");
             }else if(rawId > 0
                     && Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH){
-                Uri rawUri = DataSource.buildRawPath(applicationContext.getPackageName(), rawId);
+                Uri rawUri = MediaSource.buildRawPath(applicationContext.getPackageName(), rawId);
                 mMediaPlayer.setDataSource(RawDataSourceProvider.create(applicationContext, rawUri));
             }
 

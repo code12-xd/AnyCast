@@ -55,4 +55,9 @@
     <string name="look_more">查看更多</string>
     <string name="change_recommend">换一波推荐</string>
     <string name="selection">选集</string>
+
+    <!-- Preference -->
+    <string name="title_activity_settings">Settings</string>
+    <string name="player_header">Player Settings</string>
+    <string name="player_chooser_title">Player Module</string>
 </resources>

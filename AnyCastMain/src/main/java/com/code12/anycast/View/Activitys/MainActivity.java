@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 //import butterknife.BindView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import com.code12.anycast.auxilliary.utils.ConstantUtil;
 import com.code12.anycast.auxilliary.utils.LogUtil;
 import com.code12.anycast.auxilliary.utils.PreferenceUtil;
 import com.code12.anycast.View.auxiliary.ToastUtil;
+import com.code12.playerframework.config.PlayerChooser;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -62,6 +64,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         mNavigationView = findViewById(R.id.navigation_view);
         //初始化侧滑菜单
         initNavigationView();
+
+        int c = Integer.valueOf(PreferenceUtil.getString(PreferenceUtil.KEY_PLAYER_CHOOSER, "2"));
+        PlayerChooser.setDefaultPlanId(c);
     }
 
     @Override
@@ -124,6 +129,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         switch (item.getItemId()) {
             case R.id.item_theme:
                 //TODO: ??
+                return true;
+            case R.id.item_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
         }
         return false;

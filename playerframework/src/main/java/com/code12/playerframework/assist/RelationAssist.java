@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import com.code12.playerframework.AVPlayer;
-import com.code12.playerframework.config.PlayerConfig;
-import com.code12.playerframework.entity.DataSource;
+import com.code12.playerframework.config.PlayerChooser;
+import com.code12.playerframework.source.MediaSource;
 import com.code12.playerframework.event.EventKey;
 import com.code12.playerframework.event.OnErrorEventListener;
 import com.code12.playerframework.event.OnPlayerEventListener;
@@ -26,7 +26,7 @@ import com.code12.playerframework.render.AspectRatio;
 import com.code12.playerframework.render.IRender;
 import com.code12.playerframework.render.RenderSurfaceView;
 import com.code12.playerframework.render.RenderTextureView;
-import com.code12.playerframework.widget.SuperContainer;
+import com.code12.playerframework.ui.ControllerLayout;
 
 /**
  *
@@ -49,7 +49,7 @@ public final class RelationAssist implements AssistPlay {
     /**
      * SuperContainer for ReceiverGroup and Render.
      */
-    private SuperContainer mSuperContainer;
+    private ControllerLayout mSuperContainer;
 
     /**
      * ReceiverGroup from out setting.
@@ -68,7 +68,7 @@ public final class RelationAssist implements AssistPlay {
 
     private IRender.IRenderHolder mRenderHolder;
 
-    private DataSource mDataSource;
+    private MediaSource mDataSource;
 
     private boolean isBuffering;
 
@@ -82,19 +82,19 @@ public final class RelationAssist implements AssistPlay {
         this(context, null);
     }
 
-    public RelationAssist(Context context, SuperContainer superContainer){
+    public RelationAssist(Context context, ControllerLayout superContainer){
         this.mContext = context;
         mPlayer = new AVPlayer();
         if(superContainer == null){
-            superContainer = new SuperContainer(context);
+            superContainer = new ControllerLayout(context);
         }
-        if(PlayerConfig.isUseDefaultNetworkEventProducer())
+        if(PlayerChooser.isUseDefaultNetworkEventProducer())
             superContainer.addEventProducer(new NetworkEventProducer(context));
         mSuperContainer = superContainer;
         mSuperContainer.setStateGetter(mInternalStateGetter);
     }
 
-    public SuperContainer getSuperContainer() {
+    public ControllerLayout getSuperContainer() {
         return mSuperContainer;
     }
 
@@ -384,7 +384,7 @@ public final class RelationAssist implements AssistPlay {
     }
 
     @Override
-    public void setDataSource(DataSource dataSource){
+    public void setDataSource(MediaSource dataSource){
         this.mDataSource = dataSource;
     }
 
@@ -448,7 +448,7 @@ public final class RelationAssist implements AssistPlay {
         }
     }
 
-    private void onInternalSetDataSource(DataSource dataSource){
+    private void onInternalSetDataSource(MediaSource dataSource){
         mPlayer.setDataSource(dataSource);
     }
 

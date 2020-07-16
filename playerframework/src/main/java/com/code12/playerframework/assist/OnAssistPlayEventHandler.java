@@ -5,7 +5,7 @@ package com.code12.playerframework.assist;
 
 import android.os.Bundle;
 
-import com.code12.playerframework.entity.DataSource;
+import com.code12.playerframework.source.MediaSource;
 import com.code12.playerframework.event.EventKey;
 import com.code12.playerframework.log.PLog;
 
@@ -66,7 +66,7 @@ public class OnAssistPlayEventHandler extends BaseEventAssistHandler<AssistPlay>
     @Override
     public void requestPlayDataSource(AssistPlay assist, Bundle bundle) {
         if(bundle!=null){
-            DataSource data = (DataSource) bundle.getSerializable(EventKey.SERIALIZABLE_DATA);
+            MediaSource data = (MediaSource) bundle.getSerializable(EventKey.SERIALIZABLE_DATA);
             if(data==null){
                 PLog.e("OnAssistPlayEventHandler","requestPlayDataSource need legal data source");
                 return;

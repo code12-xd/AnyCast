@@ -1,20 +1,22 @@
 /*
- * Copyright 2017 jiajunhui<junhui_jia@163.com>
+ * Copyright (C) 2020 code12
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ *  Created by code12, 2020-07-14.
+ *  Polymerized both contains player view and its controller view.
  */
-
-package com.code12.playerframework.widget;
+package com.code12.playerframework.ui;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -28,8 +30,8 @@ import android.widget.FrameLayout;
 import com.code12.playerframework.AVPlayer;
 import com.code12.playerframework.assist.InterEvent;
 import com.code12.playerframework.assist.OnVideoViewEventHandler;
-import com.code12.playerframework.config.PlayerConfig;
-import com.code12.playerframework.entity.DataSource;
+import com.code12.playerframework.config.PlayerChooser;
+import com.code12.playerframework.source.MediaSource;
 import com.code12.playerframework.event.EventKey;
 import com.code12.playerframework.event.OnErrorEventListener;
 import com.code12.playerframework.event.OnPlayerEventListener;
@@ -52,20 +54,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-
-/**
- * Created by Taurus on 2018/3/17.
- */
-
-public class BaseVideoView extends FrameLayout implements IVideoView, IStyleSetter {
-
-    final String TAG = "BaseVideoView";
+public class PlayerPolyFrameLayout extends FrameLayout implements IPlayerView, IStyleSetter {
+    final String TAG = "PlayerView";
 
     private int mRenderType = IRender.RENDER_TYPE_TEXTURE_VIEW;
     private AVPlayer mPlayer;
 
     //the container for all play view, contain all covers.
-    private SuperContainer mSuperContainer;
+    private ControllerLayout mSuperContainer;
 
     private OnPlayerEventListener mOnPlayerEventListener;
     private OnErrorEventListener mOnErrorEventListener;
@@ -90,15 +86,15 @@ public class BaseVideoView extends FrameLayout implements IVideoView, IStyleSett
 
     private OnVideoViewEventHandler mEventAssistHandler;
 
-    public BaseVideoView(Context context){
+    public PlayerPolyFrameLayout(Context context){
         this(context, null);
     }
 
-    public BaseVideoView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public PlayerPolyFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public BaseVideoView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public PlayerPolyFrameLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr);
     }
@@ -122,12 +118,12 @@ public class BaseVideoView extends FrameLayout implements IVideoView, IStyleSett
      * you can get the SuperContainer instance ,and dispatch your custom event.
      *
      * see also
-     * {@link SuperContainer#dispatchPlayEvent(int, Bundle)}
-     * {@link SuperContainer#dispatchErrorEvent(int, Bundle)}
+     * {@link ControllerLayout#dispatchPlayEvent(int, Bundle)}
+     * {@link ControllerLayout#dispatchErrorEvent(int, Bundle)}
      *
      * @return
      */
-    public final SuperContainer getSuperContainer(){
+    public final ControllerLayout getSuperContainer(){
         return mSuperContainer;
     }
 
@@ -135,9 +131,9 @@ public class BaseVideoView extends FrameLayout implements IVideoView, IStyleSett
     //default add NetworkEventProducer.
     //if you want custom you container ,
     //you can return a custom container extends SuperContainer.
-    protected SuperContainer onCreateSuperContainer(Context context){
-        SuperContainer superContainer = new SuperContainer(context);
-        if(PlayerConfig.isUseDefaultNetworkEventProducer())
+    protected ControllerLayout onCreateSuperContainer(Context context){
+        ControllerLayout superContainer = new ControllerLayout(context);
+        if(PlayerChooser.isUseDefaultNetworkEventProducer())
             superContainer.addEventProducer(new NetworkEventProducer(context));
         return superContainer;
     }
@@ -174,7 +170,7 @@ public class BaseVideoView extends FrameLayout implements IVideoView, IStyleSett
 
     /**
      * if you need , you can set a data provider.{@link IDataProvider}
-     * you need call this method before {@link this#setDataSource(DataSource)}.
+     * you need call this method before {@link this#setDataSource(MediaSource)}.
      * @param dataProvider
      */
     public void setDataProvider(IDataProvider dataProvider) {
@@ -190,7 +186,7 @@ public class BaseVideoView extends FrameLayout implements IVideoView, IStyleSett
     }
 
     @Override
-    public void setDataSource(DataSource dataSource) {
+    public void setDataSource(MediaSource dataSource) {
         //init AudioManager
         requestAudioFocus();
         //release render on data change.
@@ -252,7 +248,7 @@ public class BaseVideoView extends FrameLayout implements IVideoView, IStyleSett
                 mPlayer.setUseTimerProxy(false);
             }
             if(mEventAssistHandler!=null)
-                mEventAssistHandler.onAssistHandle(BaseVideoView.this, eventCode, bundle);
+                mEventAssistHandler.onAssistHandle(PlayerPolyFrameLayout.this, eventCode, bundle);
             if(mOnReceiverEventListener!=null)
                 mOnReceiverEventListener.onReceiverEvent(eventCode, bundle);
         }

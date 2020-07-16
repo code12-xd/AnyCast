@@ -23,4 +23,8 @@
     <style name="AppTheme.FullScreen" parent="AppTheme.NoActionBar">
         <item name="android:windowFullscreen">true</item>
     </style>
+
+    <style name="SettingsTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="preferenceTheme">@style/SimpPreference</item>
+    </style>
 </resources>
