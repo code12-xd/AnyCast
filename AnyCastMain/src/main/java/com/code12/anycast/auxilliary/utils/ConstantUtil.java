@@ -18,6 +18,7 @@ public class ConstantUtil {
     public static final String BANGUMI_BASE_URL = "http://bangumi.bilibili.com/";
     public static final String VIDEO_SEARCH_HEAD = "http://www.bilibili.com/video/";
     public static final String VIDEO_INTERFACE_URL ="http://interface.bilibili.com/";
+    public static final String YOUTUBEV_BASE_URL = "http://youtube.com/";
 
     public static final String TYPE_TOPIC = "weblink";
     public static final String TYPE_ACTIVITY_CENTER = "activity";

@@ -41,6 +41,7 @@
     <string name="section_more">分区</string>
     <string name="section_game">游戏</string>
     <string name="section_discover">发现</string>
+    <string name="section_local">本地</string>
 
     <!--主题选择-->
     <string name="theme_pick">主题选择</string>

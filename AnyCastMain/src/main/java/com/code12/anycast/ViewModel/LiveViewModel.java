@@ -11,10 +11,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-import com.code12.anybaseui.Model.DataLoaderFactory;
-import com.code12.anybaseui.Model.IDataLoader;
-import com.code12.anycast.Model.types.LiveAppIndexInfo;
-import com.code12.anycast.Model.network.RetrofitHelper;
+import com.code12.anycast.Model.Assets.AssetsLoader;
+import com.code12.anycast.Model.types.SampleInfo;
+
+import java.util.List;
 
 public class LiveViewModel extends BaseFragmentViewModel {
     public LiveViewModel(@NonNull Application application) {
@@ -23,12 +23,25 @@ public class LiveViewModel extends BaseFragmentViewModel {
 
     @Override
     public <T> void loadData(Consumer<? super T> onNext, Consumer<? super Throwable> onError) {
-        loadDataObservable().subscribe((Consumer<? super LiveAppIndexInfo>)onNext, onError);
+        loadDataObservable().subscribe((Consumer<? super SampleInfo>)onNext, onError);
     }
 
     @Override
     public Observable loadDataObservable() {
-        IDataLoader loader = DataLoaderFactory.<LiveAppIndexInfo>createDataLoader(LiveAppIndexInfo.class);
-        return loader.loadObservable();
+        Observable<SampleInfo> section = Observable.create(subscriber -> {
+            AssetsLoader loader = new AssetsLoader(new AssetsLoader.DataListener() {
+                @Override
+                public void onDataReady(List<AssetsLoader.SampleGroup> groups) {
+                    subscriber.onNext(SampleInfo.buildFrom(groups));
+                }
+            });
+            loader.readFromAsset("livelist.json");
+        });
+        return section.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public void clear() {
     }
 }

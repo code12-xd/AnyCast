@@ -30,17 +30,17 @@ public class AssetsLoader {
         void onDataReady(final List<SampleGroup> groups);
     }
 
-    public void readFromAsset() {
-        init();
+    public void readFromAsset(final String suffix) {
+        init(suffix);
         loadSample();
     }
 
-    private void init() {
+    private void init(final String suffix) {
         ArrayList<String> uriList = new ArrayList<>();
         AssetManager assetManager = AcApplication.getInstance().getAssets();
         try {
             for (String asset : assetManager.list("")) {
-                if (asset.endsWith(".exolist.json")) {
+                if (asset.endsWith(suffix)) {
                     uriList.add(asset);//"asset:///" +
                 }
             }

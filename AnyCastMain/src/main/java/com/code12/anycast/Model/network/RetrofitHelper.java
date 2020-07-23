@@ -12,6 +12,7 @@ import com.code12.anycast.Model.network.api.GameApi;
 import com.code12.anycast.Model.network.api.LiveService;
 import com.code12.anycast.Model.network.api.NormalVideoApi;
 import com.code12.anycast.Model.network.api.VideoApi;
+import com.code12.anycast.Model.network.api.YouTubeVideoApi;
 import com.code12.anycast.auxilliary.utils.CommonUtil;
 import com.code12.anycast.auxilliary.utils.ConstantUtil;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -68,6 +69,10 @@ public class RetrofitHelper {
 
     public static VideoApi getVideoAPI(String url) {
         return createApi(VideoApi.class, url);
+    }
+
+    public static YouTubeVideoApi getYouTubeVAPI() {
+        return createApi(YouTubeVideoApi.class, ConstantUtil.YOUTUBEV_BASE_URL);
     }
 
     private static <T> T createApi(Class<T> clazz, String baseUrl) {

@@ -106,7 +106,7 @@ public class HomePageFragment extends BaseFragment
     private void initViewPager() {
         HomePagerAdapter mHomeAdapter = new HomePagerAdapter(getChildFragmentManager(),
                 getActivity().getApplicationContext());
-        mViewPager.setOffscreenPageLimit(5);
+        mViewPager.setOffscreenPageLimit(6);
         mViewPager.setAdapter(mHomeAdapter);
         mSlidingTab.setViewPager(mViewPager);
         mViewPager.setCurrentItem(3);

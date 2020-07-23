@@ -61,6 +61,11 @@ public class LogUtil {
         e(msg);
     }
 
+    public static void v(String tag, String msg) {
+        if (isShow)
+            Log.v(tag, msg);
+    }
+
     public static void d(String msg) {
         v(msg);
     }

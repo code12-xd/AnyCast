@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.code12.anycast.Model.types.LiveAppIndexInfo;
+import com.code12.anycast.Model.types.SampleInfo;
 import com.code12.anycast.R;
 import com.code12.anycast.View.Views.CustomEmptyView;
 import com.code12.anycast.View.adapters.LiveAppIndexAdapter;
+import com.code12.anycast.View.adapters.SampleAdapter;
 import com.code12.anycast.ViewModel.LiveViewModel;
 import com.code12.anycast.View.auxiliary.SnackbarUtil;
 
@@ -28,7 +30,7 @@ public class LiveFragment extends BaseFragment
     SwipeRefreshLayout mSwipeRefreshLayout;
 //    @BindView(R.id.empty_layout)
     CustomEmptyView mCustomEmptyView;
-    private LiveAppIndexAdapter mLiveAppIndexAdapter;
+    private SampleAdapter mAdapter;
 
     public static LiveFragment newInstance()
     {
@@ -69,19 +71,10 @@ public class LiveFragment extends BaseFragment
     }
 
     protected void initRecyclerView() {
-        mLiveAppIndexAdapter = new LiveAppIndexAdapter(getActivity());
-        mRecyclerView.setAdapter(mLiveAppIndexAdapter);
-        GridLayoutManager layout = new GridLayoutManager(getActivity(), 12);
+        mAdapter = new SampleAdapter(getActivity());
+        mRecyclerView.setAdapter(mAdapter);
+        GridLayoutManager layout = new GridLayoutManager(getActivity(), 2);
         layout.setOrientation(LinearLayoutManager.VERTICAL);
-        layout.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup()
-        {
-
-            @Override
-            public int getSpanSize(int position)
-            {
-                return mLiveAppIndexAdapter.getSpanSize(position);
-            }
-        });
 
         mRecyclerView.setLayoutManager(layout);
     }
@@ -96,14 +89,8 @@ public class LiveFragment extends BaseFragment
     }
 
     private void loadData() {
-//        mViewModel.loadData(liveAppIndexInfo -> {
-//            mLiveAppIndexAdapter.setLiveInfo((LiveAppIndexInfo)liveAppIndexInfo);
-//            finishTask();
-//        }, throwable -> {
-//            initEmptyView();
-//        });
-        mViewModel.loadDataObservable().subscribe(liveAppIndexInfo -> {
-            mLiveAppIndexAdapter.setLiveInfo((LiveAppIndexInfo)liveAppIndexInfo);
+        mViewModel.loadDataObservable().subscribe(info -> {
+            mAdapter.setSampleInfo((SampleInfo)info);
             finishTask();
         }, throwable -> {
             initEmptyView();
@@ -128,7 +115,7 @@ public class LiveFragment extends BaseFragment
     public void finishTask() {
         hideEmptyView();
         mSwipeRefreshLayout.setRefreshing(false);
-        mLiveAppIndexAdapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
         mRecyclerView.scrollToPosition(0);
     }
 }

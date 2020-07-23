@@ -5,6 +5,7 @@
         <item>@string/section_recommend</item>
         <item>@string/section_game</item>
         <item>@string/section_more</item>
+        <item>@string/section_local</item>
     </string-array>
     <!-- Player Preference -->
     <string-array name="player_entries">

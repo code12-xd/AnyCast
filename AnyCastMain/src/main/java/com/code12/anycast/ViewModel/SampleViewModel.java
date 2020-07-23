@@ -5,18 +5,13 @@ package com.code12.anycast.ViewModel;
 
 import android.app.Application;
 
-import com.code12.anybaseui.Model.DataLoaderFactory;
-import com.code12.anybaseui.Model.IDataLoader;
 import com.code12.anycast.Model.Assets.AssetsLoader;
-import com.code12.anycast.Model.types.GameInfo;
 import com.code12.anycast.Model.types.SampleInfo;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -28,7 +23,7 @@ public class SampleViewModel extends BaseFragmentViewModel {
 
     @Override
     public <T> void loadData(Consumer<? super T> onNext, Consumer<? super Throwable> onError) {
-        loadDataObservable().subscribe((Consumer<? super GameInfo>)onNext, onError);
+        loadDataObservable().subscribe((Consumer<? super SampleInfo>)onNext, onError);
     }
 
     @Override
@@ -50,7 +45,7 @@ public class SampleViewModel extends BaseFragmentViewModel {
                     subscriber.onNext(SampleInfo.buildFrom(groups));
                 }
             });
-            loader.readFromAsset();
+            loader.readFromAsset(".exolist.json");
         });
         return section.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

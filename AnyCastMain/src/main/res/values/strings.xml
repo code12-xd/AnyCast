@@ -36,6 +36,7 @@
     <string name="section_more">Area</string>
     <string name="section_game">Game</string>
     <string name="section_discover">Discovery</string>
+    <string name="section_local">Local</string>
 
     <!--主题选择-->
     <string name="theme_pick">主题选择</string>

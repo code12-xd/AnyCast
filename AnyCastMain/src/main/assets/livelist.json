@@ -1,0 +1,32 @@
+[
+  {
+    "name": "直播推流",
+    "samples": [
+      {
+        "name": "大熊兔-点播",
+        "uri": "rtmp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov",
+        "extension": "rtmp"
+      },
+      {
+        "name": "大熊兔-点播",
+        "uri": "rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov",
+        "extension": "rtsp"
+      },
+      {
+        "name": "湖南卫视",
+        "uri": "rtmp://58.200.131.2:1935/livetv/hunantv",
+        "extension": "rtmp"
+      },
+      {
+        "name": "广西卫视",
+        "uri": "rtmp://58.200.131.2:1935/livetv/gxtv",
+        "extension": "rtmp"
+      },
+      {
+        "name": "广东卫视",
+        "uri": "rtmp://58.200.131.2:1935/livetv/gdtv",
+        "extension": "rtmp"
+      }
+    ]
+  }
+]

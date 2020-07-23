@@ -20,6 +20,7 @@ package com.code12.exowrapper;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -32,8 +33,10 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ext.rtmp.RtmpDataSourceFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MergingMediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.SingleSampleMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
@@ -48,6 +51,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.RawResourceDataSource;
+import com.google.android.exoplayer2.util.EventLogger;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
 import com.code12.playerframework.config.PlayerChooser;
@@ -95,7 +99,8 @@ public class ExoMediaPlayer extends BaseInternalPlayer {
 
     public ExoMediaPlayer(){
         mAppContext = PlayerLibrary.getApplicationContext();
-        RenderersFactory renderersFactory = new DefaultRenderersFactory(mAppContext);
+        RenderersFactory renderersFactory = new DefaultRenderersFactory(mAppContext)
+                .setExtensionRendererMode(DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
         DefaultTrackSelector trackSelector =
                 new DefaultTrackSelector(mAppContext);
         mInternalPlayer = new SimpleExoPlayer.Builder(mAppContext, renderersFactory)
@@ -208,8 +213,13 @@ public class ExoMediaPlayer extends BaseInternalPlayer {
                 return new HlsMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
             case C.TYPE_OTHER:
             default:
-                // This is the MediaSource representing the media to be played.
-                return new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
+                if (uri.getScheme().equals("rtmp")) {
+                    return new ProgressiveMediaSource.Factory(new RtmpDataSourceFactory())
+                            .createMediaSource(uri);
+                } else {
+                    // This is the MediaSource representing the media to be played.
+                    return new ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(uri);
+                }
         }
     }
 
