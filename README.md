@@ -22,6 +22,10 @@ Android视频播放类app，MVVM+rxJava+Retrofit+okHttp+Glide
     - 视频点播系统 - 通过restFUL API接入数据，GSON解析，目前已接入阿里云点播平台、bilibili，计划接入youtube、搜狐视频等后台获取点播数据；
     - 视频播放 - 独立的视频播放模块，抽象的视频播放接口层，可接入多个主流播放框架，目前已接入ExoPlayer、IjkPlayer；计划对接入的player进行优化；后期规划实现基于FFMpeg的自己的播放模块；
     - 动态布局切换 – 对container layout进行抽象，实现根据配置文件改变页面布局，规划中；
-    - 视频直播 - 规划中；
+    - 视频直播 - 增加对直播流rtmp的支持，添加示例频道湖南卫视、广东卫视等；
     - 用户信息管理 – 规划中；
     - 更多功能 – 规划中…
+    
+# 修改历史
+2020.07.23
+    添加rtmp支持，exoplayer添加ffmpeg extension。
